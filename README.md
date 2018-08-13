@@ -1,8 +1,8 @@
 # Тестовый пример для Buzzweb
 
 # STACK
-- backend Laravel 5.6
-- frontend ReactJS+Redux 
+- backend Laravel 5.5
+- frontend ReactJS 15.6 + Redux 
 - DB: MySQL
 
 # Тестовые пользователи
