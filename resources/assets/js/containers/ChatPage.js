@@ -15,8 +15,14 @@ class ChatList extends Component{
   };
   componentDidMount = () => {
     const {actions, id} = this.props;
-    console.log(this.props.id);
-    actions.fetchChat(this.props.id);
+    actions.fetchChat(id);
+    actions.startMiddleware();
+    actions.addEchoListener('chat.'+this.props.id,
+      'ChatUpdate', this.handleChatUpdate);
+  };
+  componentWillUnmount = () => {
+    const {actions, id} = this.props;
+    actions.removeEchoListener('chat.'+id);
   };
   handleSendMsg = () => {
     const {actions, id} = this.props;
@@ -121,11 +127,7 @@ class ChatList extends Component{
                                 author={msg.from == user.id?user:chat.companion}
                               />
                             ))}
-                            <Pusher
-                              channel={'chat.'+chat.id}
-                              event={'App\\Events\\ChatUpdate'}
-                              onUpdate={()=>{this.handleChatUpdate()}}
-                              />
+
                             </div>
                           </div>
                         </div>

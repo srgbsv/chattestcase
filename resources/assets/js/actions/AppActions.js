@@ -1,9 +1,14 @@
 import * as types from '../constants/ActionTypes';
 import {push} from 'react-router-redux'
+import {
+  ECHO_CONNECT,
+  ECHO_ADD_LISTENER,
+  ECHO_REMOVE_LISTENER
+} from '../constants/EchoEventTypes.js';
 
 export const getUser = () => dispatch => {
   dispatch(requestUser());
-  return fetch('/api/user/', {credentials: 'include'})
+  return fetch('/api/user', {credentials: 'include'})
     .then(resp => resp.json())
     .then(resp => dispatch(receiveUser(resp)));
 };
@@ -62,7 +67,7 @@ export const login = (login, pass, remember) => dispatch => {
     password: pass,
     remember
   });
-  return fetch('/api/login/', {
+  return fetch('/api/login', {
     headers: {
       'X-CSRF-Token': document.querySelector("meta[name='csrf-token']")?document.querySelector("meta[name='csrf-token']").getAttribute('content'):'',
       'Accept': 'application/json',
@@ -183,4 +188,23 @@ export const sendChatMsg = (chatId, msg) => dispatch => {
   }
 };
 
+export const startMiddleware = () => dispatch => {
+  dispatch({type: ECHO_CONNECT});
+};
+
+export const addEchoListener = (channel, event, payload) => dispatch => {
+  dispatch({
+    type: ECHO_ADD_LISTENER,
+    channel: channel,
+    event: event,
+    payload: payload
+  });
+};
+
+export const removeEchoListener = (channel) => dispatch => {
+  dispatch({
+    type: ECHO_REMOVE_LISTENER,
+    channel: channel
+  });
+};
 
